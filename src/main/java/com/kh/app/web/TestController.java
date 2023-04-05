@@ -3,7 +3,11 @@ package com.kh.app.web;
 import com.kh.app.web.form.Member;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -76,5 +80,28 @@ public class TestController {
     RestResponse<Object> res = null;
     res = RestResponse.createRestResponse("00","성공",member);
     return res;
+  }
+
+  //2개 이상의 요청 url 받기
+  @ResponseBody
+  @GetMapping({"/case1","/case2","/case3"})
+  public String case9(){
+    return "ok";
+  }
+
+  @PostMapping("/object2")
+  public String case10 (@ModelAttribute Member member, Model model){
+    log.info("id={},age={}",member.getId(),member.getAge());
+    model.addAttribute("var1","울산");
+    model.addAttribute("var2","KH");
+    model.addAttribute("var3","정보교육원");
+
+    List<String> list = new ArrayList<>();
+    list.add("a");
+    list.add("b");
+    list.add("c");
+    model.addAttribute("list",list);
+
+    return "test/view";
   }
 }
